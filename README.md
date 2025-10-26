@@ -1,1 +1,1 @@
-The only thing I have currently is the assets folder. I was getting some Git LFS issues.
+I don't have permission to rename the main branch.

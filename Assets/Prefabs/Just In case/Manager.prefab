@@ -1,0 +1,199 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &9104675755905203566
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 15788936943969371}
+  - component: {fileID: 8460479831558964762}
+  - component: {fileID: 984863302961450470}
+  - component: {fileID: 416854345828973924}
+  - component: {fileID: 8951241918706154373}
+  - component: {fileID: 3255247970590962580}
+  - component: {fileID: 862138794274644098}
+  - component: {fileID: 2955135987305916449}
+  - component: {fileID: 4533037401044071632}
+  m_Layer: 0
+  m_Name: Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &15788936943969371
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9104675755905203566}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.24476, y: 0.40332, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8460479831558964762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9104675755905203566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0db3edaa45b0194c816cd0c0d27af99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  canWait: 1
+  canTimeTravel: 1
+  canMakeGhosts: 1
+  firstTeleporter: {fileID: 0}
+--- !u!114 &984863302961450470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9104675755905203566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7a9ce04f021a8e4d83f33145aa1a950, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PrefabManager
+  player: {fileID: 1920225224273837152, guid: f7a74c11f41437144bc754d1e60206ee, type: 3}
+  ghost: {fileID: 3102008441850128685, guid: 3562f323318918d41beb24884a885073, type: 3}
+  button: {fileID: 2335916181036424220, guid: 1c6bfe91e406d3647ab7ec807d8822c0, type: 3}
+  elevator: {fileID: 7921435865629458521, guid: 092dd23a8be3bfe4388fb978dcbee7f4, type: 3}
+  door: {fileID: 6063915187678373838, guid: e0c682758a3332646b2e6f9bfb3b5975, type: 3}
+  lever: {fileID: 0}
+  crate: {fileID: 0}
+  teleporter: {fileID: 0}
+  prefabs: []
+--- !u!114 &416854345828973924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9104675755905203566}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d06f1d05dc2c22e4e91e7523b9f08968, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RoomManager
+  exitBoxPrefab: {fileID: 0}
+  tMArray: []
+--- !u!114 &8951241918706154373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9104675755905203566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7f87b12374bd9d4c96d1f08be5473f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TimeManager
+  _time: 0
+  _actualTime: 0
+  _timeScale: 0
+  _isPaused: 0
+--- !u!114 &3255247970590962580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9104675755905203566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82410c30bd51a6f4aabd2a188b49eeb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveManager
+  save:
+    inventory:
+      maxInventory: 0
+      items:
+      - id: 0
+        name: Iron Bar
+        description: Useful for some upgrades
+        count: 0
+      - id: 1
+        name: Gold Bar
+        description: Useful for some upgrades
+        count: 0
+      - id: 2
+        name: Azur Bar
+        description: Useful for some upgrades
+        count: 0
+      - id: 3
+        name: Bloody Bar
+        description: Useful for some upgrades
+        count: 0
+    objectData:
+      objectData: []
+      Count: 0
+    ghosts:
+      ghosts: []
+      Count: 0
+    canTimeTravel: 0
+    canMakeGhosts: 0
+    time: 0
+    teleporterID: 0
+    upgradeAbility: 0
+    quickSave:
+      quickRealTime: 0
+      quickFakeTime: 0
+      quickObjectData:
+        objectData: []
+        teleporterID: 0
+        time: 0
+      quickPosition: {x: 0, y: 0, z: 0}
+--- !u!114 &862138794274644098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9104675755905203566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 096a1192d817b1c4ab02c37c40264502, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GhostManager
+  ghostPrefab: {fileID: 3102008441850128685, guid: 3562f323318918d41beb24884a885073, type: 3}
+--- !u!114 &2955135987305916449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9104675755905203566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24f883bc1d3cc4b44b6b9a36508f384a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractionManager
+--- !u!114 &4533037401044071632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9104675755905203566}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f1423d40cf57bf4e8414a01aeb599fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeText: {fileID: 0}
+  pauseMenu: {fileID: 0}
+  canvas: {fileID: 0}

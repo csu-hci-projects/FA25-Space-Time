@@ -12,10 +12,10 @@ public class Inventory {
         money = 0;
         maxInventory = false;
         items = new List<Item>();
-        CreateItem(new Item(0,"Iron Bar","Useful for some upgrades",0));
-        CreateItem(new Item(1,"Gold Bar","Useful for some upgrades",0));
-        CreateItem(new Item(2,"Azur Bar","Useful for some upgrades",0));
-        CreateItem(new Item(3,"Bloody Bar","Useful for some upgrades",0));
+        // CreateItem(new Item(0,"Iron Bar","Useful for some upgrades",0));
+        // CreateItem(new Item(1,"Gold Bar","Useful for some upgrades",0));
+        // CreateItem(new Item(2,"Azur Bar","Useful for some upgrades",0));
+        // CreateItem(new Item(3,"Bloody Bar","Useful for some upgrades",0));
     }
     public void ResetData()
     {

@@ -65,6 +65,7 @@
     "explorer.fileNesting.enabled": true,
     "explorer.fileNesting.patterns": {
         "*.sln": "*.csproj",
+        "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "Time Game.sln"
+    "dotnet.defaultSolution": "Space Time 2.slnx"
 }

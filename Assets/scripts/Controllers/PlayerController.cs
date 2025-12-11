@@ -7,14 +7,18 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : Controller
 {
+    private readonly float defaultJumpSpeed = 6f, defaultWalkSpeed = 5f, defaultRunSpeed = 12f;
+
     private TimeManager tM;
     private GhostManager ghM;
     private GameManager gM;
-    private PlayerInputActions pInput;
-    private InputAction move, jump, interact, attack, drop;
+    public PlayerInputActions pInput;
+    private InputAction move, jump, interact, warp, drop, read;
+    private Animator animator;
+    private TouchingHandler touchH;
     public Rigidbody2D rb;
-    Animator animator;
-    TouchingHandler touchH;
+
+    public bool canTimeTravel;
     public Vector2 moveInput;
     private bool holdingRun = false;
     private float jumpSpeed = 6f, walkSpeed = 5f, runSpeed = 12f;
@@ -23,7 +27,7 @@ public class PlayerController : Controller
     [SerializeField]
     private bool _isJumping = false;
     [SerializeField]
-    private bool _isHoldingJump = false;
+    private bool _isBufferingJump = false;
     [SerializeField]
     private bool _isHoldingDrop = false;
     [SerializeField]
@@ -34,7 +38,7 @@ public class PlayerController : Controller
     
 
     public float currentMoveSpeed {
-            get {
+        get {
             if(CanMove) {
                 if (IsMoving && !touchH.IsOnWall) {
                     if(IsRunning) {
@@ -81,18 +85,19 @@ public class PlayerController : Controller
     }
 
     // If the coroutine is running and this value changes, end the coroutine. If the value is true, start a coroutine
-    public bool IsHoldingJump {
+    public bool IsBufferingJump {
         get {
-            return _isHoldingJump;
+            return _isBufferingJump;
         } set {
-            if(_isHoldingJump) {
+            if(_isBufferingJump) {
                 StopCoroutine(jumpBuffer);
             }
-            if(!_isHoldingJump && value) {
+            // if(!_isBufferingJump && value) {
+            if(value) {
                 jumpBuffer = BufferJump();
                 StartCoroutine(jumpBuffer);
             }
-            _isHoldingJump = value;
+            _isBufferingJump = value;
         }
     }
 
@@ -100,11 +105,12 @@ public class PlayerController : Controller
         get {
             return _isJumping;
         } set {
-            if(!_isJumping && value) {
-                // if(IsGrounded)
+            // if(!_isJumping && value) {
+            if(value && !_isJumping) {
+                jumpHold = HoldJump();
                 StartCoroutine(jumpHold);
                 animator.SetTrigger(AnimStr.jump);
-            } else {
+            } else if(!value) {
                 StopCoroutine(jumpHold);
             }
             _isJumping = value;
@@ -125,17 +131,25 @@ public class PlayerController : Controller
             _isHoldingDrop = value;
             if (value)
             {
-                Debug.Log("Ignoring collision between 8 and 6");
                 Physics.IgnoreLayerCollision(8, 6, true);
             }
             else
             {
-                Debug.Log("Noring collision between 8 and 6");
                 Physics.IgnoreLayerCollision(8, 6, false);
             }
         }
     }
 
+    public void ScaleMovementSpeed(float scale)
+    {
+        jumpSpeed = defaultJumpSpeed * scale;
+        walkSpeed = defaultWalkSpeed * scale;
+        runSpeed = defaultRunSpeed * scale;
+    }
+
+    public override void Die() {
+        
+    }
     public void OnMove(InputAction.CallbackContext context) 
     {
         moveInput = context.ReadValue<Vector2>();
@@ -149,23 +163,12 @@ public class PlayerController : Controller
         }
     }
 
-    public void OnJump(InputAction.CallbackContext context)
-    {
-        if(context.started) {
-            IsHoldingJump = true;
-        } else if(context.canceled) {
-            IsHoldingJump = false;
-            if(IsJumping) {
-                IsJumping = false;
-            }
-        }
-    }
+    
 
     public void OnDrop(InputAction.CallbackContext context)
     {
         if (context.started)
         {
-            Debug.Log("Drop");
             IsHoldingDrop = true;
         }
         else if (context.canceled)
@@ -173,15 +176,6 @@ public class PlayerController : Controller
             IsHoldingDrop = false;
         }
     }
-
-    public void StartJump()
-    {
-        if (touchH.IsGrounded && CanMove)
-        {
-            IsJumping = true;
-        }
-    }
-
 
     public void OnRun(InputAction.CallbackContext context)
     {
@@ -203,24 +197,39 @@ public class PlayerController : Controller
         OnInteract(context.started);
     }
     
-    public void OnAttack(InputAction.CallbackContext context)
+    public void OnWarp(InputAction.CallbackContext context)
     {
-        int newTime = gM.GetStartFrame();
-        Vector3 newPos = gM.GetStartPos();
-        tM.SetTime(newTime - 1);
-        gM.TimeTravel();
-        transform.position = newPos;
+        if(gM.canTimeTravel)
+        {
+            int newTime = gM.GetStartFrame();
+            Vector3 newPos = gM.GetStartPos();
+            tM.SetTime(newTime - 1);
+            gM.TimeTravel();
+            transform.position = newPos;
+        } else {Debug.Log("Can't warp");}
     }
-
-    // public void OnLook(InputAction.CallbackContext context) 
-    // {
-
-    // }
-
-    private IEnumerator BufferJump() 
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        if(context.started) {
+            IsBufferingJump = true;
+        } else if(context.canceled) {
+            IsBufferingJump = false;
+            if(IsJumping) {
+                IsJumping = false;
+            }
+        }
+    }
+    public void StartJump()
+    {
+        if (touchH.IsGrounded && CanMove)
+        {
+            IsJumping = true;
+        }
+    }
+    private IEnumerator BufferJump()
     {
         yield return new WaitForSeconds(0.2f);
-        IsHoldingJump = false;
+        IsBufferingJump = false;
     }
     
     private IEnumerator HoldJump() 
@@ -228,12 +237,15 @@ public class PlayerController : Controller
         yield return new WaitForSeconds(0.3f);
         IsJumping = false;
     }
-    
+    public void OnRead(InputAction.CallbackContext context)
+    {
+        GameObject.Find("Manager").GetComponent<SaveManager>().PrintData();
+    }
 
     void FixedUpdate() {
         float velocityX = moveInput.x * currentMoveSpeed;
         float velocityY = rb.linearVelocity.y;
-        if(IsHoldingJump) {
+        if(IsBufferingJump) {
             StartJump();
         }
         if(IsJumping) {
@@ -244,14 +256,17 @@ public class PlayerController : Controller
     }
 
     private void OnEnable() {
+        Debug.Log("Enabling");
         pInput.Enable();
         pInput.Player.Enable();
         move.Enable();
         move.started += OnMove; move.performed += OnMove; move.canceled += OnMove;
         jump.started += OnJump; jump.canceled += OnJump;
-        attack.started += OnAttack;
+        warp.started += OnWarp;
         interact.started += OnInteractAction; interact.canceled += OnInteractAction;
         drop.started += OnDrop; drop.canceled += OnDrop;
+        read.started += OnRead;
+
     }
 
     private void OnDisable() {
@@ -260,8 +275,10 @@ public class PlayerController : Controller
         move.Disable();
         move.started -= OnMove; move.performed -= OnMove; move.canceled -= OnMove;
         jump.started -= OnJump; jump.canceled -= OnJump;
+        warp.started -= OnWarp;
         interact.started -= OnInteractAction; interact.canceled -= OnInteractAction;
         drop.started -= OnDrop; drop.canceled -= OnDrop;
+        read.started -= OnRead;
     }
 
     private void GetManagers()
@@ -281,11 +298,16 @@ public class PlayerController : Controller
     private void GetActions()
     {
         pInput = new PlayerInputActions();
+        Debug.Log("PlayerController:" + pInput);
+        UIManager UIMan = GameObject.Find("Manager").GetComponent<UIManager>();
+        UIMan.AssignInput(pInput);
+        UIMan.enabled = true;
         move = pInput.Player.Move;
         jump = pInput.Player.Jump;
-        attack = pInput.Player.Attack;
+        warp = pInput.Player.Warp;
         interact = pInput.Player.Interact;
         drop = pInput.Player.Drop;
+        read = pInput.Player.Crouch;
         jumpBuffer = BufferJump();
         jumpHold = HoldJump();
     }

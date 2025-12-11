@@ -22,4 +22,6 @@ internal class AnimStr
     internal static string death = "death";
     internal static string dAnimCount = "deathAnimLoopCount";
     internal static string isInteracting = "isInteracting";
+
+    internal static string isFlipped = "isFlipped";
 }

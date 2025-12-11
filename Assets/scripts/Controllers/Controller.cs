@@ -39,10 +39,9 @@ public abstract class Controller : MonoBehaviour
             currentTouching.Remove(imp);
             return;
         }
-        if (!currentTouching.ContainsKey(imp))
+        if (b && !currentTouching.ContainsKey(imp))
         {
             currentTouching.Add(imp, other);
-            Debug.Log("Touching 2: ", currentTouching[0]);
             return;
         }
     }
@@ -55,13 +54,14 @@ public abstract class Controller : MonoBehaviour
             Interactable interact = g.GetComponent<Interactable>();
             if (context)
             {
-                interact.OnInteract();
+                interact.OnInteract(id);
             }
             else
             {
-                interact.OnCancelInteract();
+                interact.OnCancelInteract(id);
             }
         }
         // If touching an interactable, interact with it.
     }
+    public abstract void Die();
 }
